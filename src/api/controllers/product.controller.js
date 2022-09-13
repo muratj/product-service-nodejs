@@ -1,45 +1,28 @@
 const Product = require('../models/Product');
+const { saveProduct, findAllProducts, findProductById, updateProductById, deleteProductById } = require('../services/product.service');
 
 const createProduct = async (req, res) => {
-  const product = await Product.create({
-    sku: req.body.sku,
-    brand: req.body.brand,
-    model: req.body.model,
-    category: req.body.category,
-  });
-
+  const product = await saveProduct(req.body);
   res.json(product);
 }
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find();
+  const products = await findAllProducts();
   res.json(products);
 }
 
 const getProductById = async (req, res) => {
-  const product = await Product.findById(req.params.id);
+  const product = await findProductById(req.params.id);
   res.json(product);
 }
 
 const updateProduct = async (req, res) => {
-  await Product.updateOne(
-    { _id: req.params.id },
-    {
-      $set: {
-        sku: req.body.sku,
-        brand: req.body.brand,
-        model: req.body.model,
-        category: req.body.category
-      }
-    },
-    { new: true }
-  );
-
-  res.json(await Product.findById(req.params.id));
+  const updatedProduct = await updateProductById(req.params.id, req.body);
+  res.json(updatedProduct);
 }
 
 const deleteProduct = async (req, res) => {
-  const result = await Product.deleteOne({ _id: req.params.id });
+  const result = await deleteProductById(req.params.id);
   res.json(result);
 }
 
