@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const connectDB = require('./configs/db.config');
-const Product = require('./api/models/Product');
+const logger = require('./api/middlewares/logger');
 
 // Environment setup
 require('./configs/env.config')();
@@ -17,4 +17,4 @@ const productRouter = require('./api/routes/product.route');
 
 app.use('/product', productRouter);
 
-app.listen(PORT, () => console.log(`App is running on port ${PORT}`));
+app.listen(PORT, () => logger.info(`App is running on port ${PORT}`));
