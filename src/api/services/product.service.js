@@ -1,4 +1,4 @@
-const Exception = require('../middlewares/exceptionHandler');
+const { Exception } = require('../middlewares/exceptionHandler');
 const { badRequest } = require('../middlewares/exceptionMessages');
 const logger = require('../middlewares/logger');
 const Product = require('../models/Product');
@@ -29,6 +29,17 @@ const findAllProducts = async () => {
 const findProductById = async (id) => {
   try {
     return await Product.findById(id);
+  } catch (err) {
+    logger.error(`${badRequest}\n ${err.message}`);
+    return Exception(badRequest, err.message);
+  }
+}
+
+
+const findProductWhere = async (payload) => {
+  try {
+    const results = await Product.find(payload);
+    return results;
   } catch (err) {
     logger.error(`${badRequest}\n ${err.message}`);
     return Exception(badRequest, err.message);
@@ -71,5 +82,6 @@ module.exports = {
   findAllProducts,
   findProductById,
   updateProductById,
-  deleteProductById
+  deleteProductById,
+  findProductWhere
 }

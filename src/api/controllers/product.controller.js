@@ -1,5 +1,11 @@
 const Product = require('../models/Product');
-const { saveProduct, findAllProducts, findProductById, updateProductById, deleteProductById } = require('../services/product.service');
+const { saveProduct,
+  findAllProducts,
+  findProductById,
+  updateProductById,
+  deleteProductById,
+  findProductWhere
+} = require('../services/product.service');
 
 const createProduct = async (req, res) => {
   const product = await saveProduct(req.body);
@@ -9,7 +15,7 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   const products = await findAllProducts();
-  if (product.error) res.status(400);
+  if (products.error) res.status(400);
   res.json(products);
 }
 
@@ -17,6 +23,12 @@ const getProductById = async (req, res) => {
   const product = await findProductById(req.params.id);
   if (product.error) res.status(400);
   res.json(product);
+}
+
+const searchProducts = async (req, res) => {
+  const products = await findProductWhere(req.body);
+  if (products.error) res.status(400);
+  res.json(products);
 }
 
 const updateProduct = async (req, res) => {
@@ -36,5 +48,6 @@ module.exports = {
   getAllProducts,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  searchProducts
 }
