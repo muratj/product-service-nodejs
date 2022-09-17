@@ -10,5 +10,21 @@ services:
       - ./data:/data/db
     restart: always
 
+  app:
+    container_name: app
+    build:
+      context: .
+    ports:
+      - 4000:4000
+    env_file:
+      - .dev.env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+    depends_on:
+      - mongodb
+    restart: always
+
 volumes:
   data:
